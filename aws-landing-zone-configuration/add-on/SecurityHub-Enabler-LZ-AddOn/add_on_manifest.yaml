@@ -1,0 +1,12 @@
+---
+# Landing Zone Core Account Structure
+organizational_units:
+  # Landing Zone OU for Core accounts
+  - name: {{ core_ou }}
+    core_accounts:
+      - name: {{ core_account }}
+        core_resources:
+          - name: SecurityHubEnablerService
+            template_file: templates/core_accounts/aws-landing-zone-securityhub-enabler.template
+            parameter_file: parameters/core_accounts/aws-landing-zone-securityhub-enabler.json
+            deploy_method: stack_set

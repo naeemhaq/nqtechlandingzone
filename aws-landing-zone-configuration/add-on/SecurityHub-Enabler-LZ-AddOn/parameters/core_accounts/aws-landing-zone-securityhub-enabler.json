@@ -1,0 +1,22 @@
+[
+    {
+      "ParameterKey": "SecurityAccountId",
+      "ParameterValue": {{ SecurityAccountId }}
+    },
+    {
+      "ParameterKey": "OrganizationId",
+      "ParameterValue": {{ OrganizationId }}
+    },
+    {
+      "ParameterKey": "S3SourceBucket",
+      "ParameterValue": {{ S3SourceBucket }}
+    },
+    {
+      "ParameterKey": "ComplianceFrequency",
+      "ParameterValue": {{ ComplianceFrequency }}
+    },
+    {
+    "ParameterKey": "RoleToAssume",
+    "ParameterValue": {{ RoleToAssume }}
+    }
+]
