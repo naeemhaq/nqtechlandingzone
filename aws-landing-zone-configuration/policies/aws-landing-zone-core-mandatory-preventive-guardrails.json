@@ -225,13 +225,11 @@
         {
             "Condition": {
                 "NotIpAddress": {
-                    "aws:SourceIp": [
-                        "174.112.28.92/32"
-                      ]
+                    "aws:SourceIp": ["174.112.28.92/32"]
                 }
             },
             "Action": [
-                "s3:*"
+                "*"
             ],
             "Resource": [
                 "arn:aws::s3:::nqtech-landingzone"
