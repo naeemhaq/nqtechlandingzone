@@ -1,0 +1,6 @@
+[
+    {
+      "ParameterKey": "AggregatorAccount",
+      "ParameterValue": {{ "$[alfred_ssm_/org/member/security/account_id]" }}
+    }
+]

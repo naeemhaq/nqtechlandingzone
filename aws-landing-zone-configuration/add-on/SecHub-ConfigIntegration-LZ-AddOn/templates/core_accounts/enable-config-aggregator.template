@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Enable config aggregator for organization in the security account. 
+
+Parameters:
+  AggregatorAccount:
+    Type: String
+    Description: Account ID of the aggregator
+  AggregatorRegion:
+    Type: String
+    Default: ca-central-1
+    Description: AWS region of the aggregator
+
+Resources:
+  ConfigAggregatorRole:
+    Type: "AWS::IAM::Role"
+    Properties: 
+      AssumeRolePolicyDocument: 
+        Version: "2012-10-17"
+        Statement: 
+            Effect: "Allow"
+            Principal: 
+              Service: 
+                - "config.amazonaws.com"
+            Action: 
+              - "sts:AssumeRole"
+      Path: "/service-role/"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSConfigRoleForOrganizations
+        - arn:aws:iam::aws:policy/service-role/AWSConfigRole
+        - arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess
+
+  AggregationAuthorization:
+    Type: AWS::Config::AggregationAuthorization
+    Properties:
+      AuthorizedAccountId: !Ref AggregatorAccount
+      AuthorizedAwsRegion: !Ref AggregatorRegion
+
+  ConfigurationAggregator:
+    Type: AWS::Config::ConfigurationAggregator
+    Properties:
+      OrganizationAggregationSource:
+        RoleArn: 
+          'Fn::GetAtt':
+           - ConfigAggregatorRole
+           - Arn
+        AllAwsRegions: true
+      ConfigurationAggregatorName: NQTechAggregator

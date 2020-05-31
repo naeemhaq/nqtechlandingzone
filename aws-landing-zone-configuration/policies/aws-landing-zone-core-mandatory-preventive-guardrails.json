@@ -228,9 +228,7 @@
                     "aws:SourceIp": ["174.112.28.92/32"]
                 }
             },
-            "Action": [
-                "*"
-            ],
+            "Action": "*",
             "Resource": [
                 "arn:aws::s3:::nqtech-landingzone"
             ],
