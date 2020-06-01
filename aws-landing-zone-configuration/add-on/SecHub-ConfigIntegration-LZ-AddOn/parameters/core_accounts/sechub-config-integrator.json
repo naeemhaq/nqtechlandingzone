@@ -18,5 +18,9 @@
     {
     "ParameterKey": "RoleToAssume",
     "ParameterValue": {{ RoleToAssume }}
+    },
+    {
+      "ParameterKey": "AggregatorAccount",
+      "ParameterValue": {{ SecurityAccountId }}
     }
 ]

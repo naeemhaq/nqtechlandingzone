@@ -1,0 +1,6 @@
+[
+    {
+      "ParameterKey": "AggregatorAccount",
+      "ParameterValue": {{ SecurityAccountId }}
+    }
+]

@@ -94,13 +94,13 @@ Resources:
       Handler: 'sechubconfig-int.lambda_handler'
       Role:
         Fn::GetAtt: 
-          - Fn::Sub: "arn:aws:iam::${AWS::AccountId}:role/${SecHubConfigIntRole}"
+          - 'SecHubConfigIntRole' 
+          - 'Arn'
       Runtime: python3.7
       Timeout: 900 
       Environment:
         Variables:
-            assume_role: 
-            Fn::Sub: ${RoleToAssume}
+            assume_role: !Sub ${RoleToAssume}
             ct_root_account: !Sub ${AWS::AccountId}
             master_account: !Sub ${SecurityAccountId}
             

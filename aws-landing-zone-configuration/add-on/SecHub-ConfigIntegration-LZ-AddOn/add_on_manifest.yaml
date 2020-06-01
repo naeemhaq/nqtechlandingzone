@@ -15,6 +15,6 @@ organizational_units:
       - name: {{ core_account }}
         core_resources:
           - name: sechub-config-integrator
-            template_file: templates/core_accounts/sechub-config-integrator.template
+            template_file: templates/core_accounts/sechub-config-integration.template
             parameter_file: parameters/core_accounts/sechub-config-integrator.json
             deploy_method: stack_set
