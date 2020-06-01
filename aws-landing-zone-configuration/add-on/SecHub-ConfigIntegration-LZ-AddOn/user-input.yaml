@@ -11,3 +11,6 @@ input_parameters:
       S3SourceBucket: "aws-landing-zone-configuration-217083334892-ca-central-1"
       ComplianceFrequency: 60
       RoleToAssume: AWSCloudFormationStackSetExecutionRole
+  - file_name: parameters/core_accounts/enable-config-aggregator.json
+    parameters:
+      SecurityAccountId: "$[alfred_ssm_/org/member/security/account_id]"
