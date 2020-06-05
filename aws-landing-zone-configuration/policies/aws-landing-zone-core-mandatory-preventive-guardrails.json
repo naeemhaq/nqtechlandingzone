@@ -242,6 +242,9 @@
                 }
             },
             "Action": [
+                "organizations:EnableAWSServiceAccess",
+                "organizations:ListAWSServiceAccessForOrganization",
+                "organizations:ServicePrincipal",
                 "config:PutConfigRule",
                 "config:DeleteConfigRule",
                 "config:DeleteEvaluationResults",
@@ -252,24 +255,7 @@
                 "*"
             ],
             "Effect": "Deny",
-            "Sid": "GRCONFIGRULEPOLICY"
-        },
-        {
-            "Condition": {
-                "ArnNotLike": {
-                    "aws:PrincipalARN": "arn:aws:iam::*:role/AWSCloudFormationStackSetExecutionRole"
-                }
-            },
-            "Action": [
-                "organizations:EnableAWSServiceAccess",
-                "organizations:ListAWSServiceAccessForOrganization",
-                "organizations:ServicePrincipal"
-            ],
-            "Resource": [
-                "*"
-            ],
-            "Effect": "Deny",
-            "Sid": "GRORGANIZATIONPOLICY"
+            "Sid": "GRORGCONFIGPOLICY"
         }
     ]
 }
