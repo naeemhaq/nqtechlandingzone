@@ -9,6 +9,19 @@ Parameters:
     Type: String
     Default: ca-central-1
     Description: AWS region of the aggregator
+  OrganizationId:
+    Type: String
+    Description: AWS Organizations ID for the Landing Zone.
+    MinLength: 12
+    MaxLength: 12
+    AllowedPattern: '^[o][\-][a-z0-9]{10}$'
+    ConstraintDescription: >
+      The Org Id must be a 12 character string starting with o- and followed by 10 lower case alphanumeric characters
+  RoleToAssume:
+    Type: String
+    Default: 'AWSControlTowerExecution'
+    Description: >
+      IAM role to be assumed in child accounts to enable SecurityHub. The default is AWSControlTowerExecution for a Control Tower environment.
 
 Resources:
   ConfigAggregatorRole:
@@ -23,11 +36,31 @@ Resources:
                 - "config.amazonaws.com"
             Action: 
               - "sts:AssumeRole"
-      Path: "/service-role/"
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/service-role/AWSConfigRoleForOrganizations
-        - arn:aws:iam::aws:policy/service-role/AWSConfigRole
-        - arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess
+      Policies:
+      - PolicyName: EnableConfigAggregator
+        PolicyDocument:
+          Version: 2012-10-17
+          Statement:
+          - Effect: Allow 
+            Action:
+            - 'config:PutConfigRule'
+            - 'config:DeleteConfigRule'
+            - 'config:DeleteEvaluationResults'
+            - 'config:DeleteConfigurationAggregator'
+            - 'config:PutConfigurationAggregator'
+            - 'organizations:EnableAWSServiceAccess'
+            - 'organizations:ListAWSServiceAccessForOrganization'
+            - 'organizations:ServicePrincipal'
+            - 'organizations:ListAccounts'
+            - 'organizations:DescribeAccount'
+            Resource: '*'
+          - Effect: Allow
+            Action:
+            - sts:AssumeRole
+            Resource: !Sub 'arn:aws:iam::*:role/${RoleToAssume}'
+            Condition:
+              StringEquals:
+                "aws:PrincipalOrgId": !Ref OrganizationId
 
   AggregationAuthorization:
     Type: AWS::Config::AggregationAuthorization

@@ -2,5 +2,13 @@
     {
       "ParameterKey": "AggregatorAccount",
       "ParameterValue": {{ SecurityAccountId }}
+    },
+    {
+      "ParameterKey": "OrganizationId",
+      "ParameterValue": {{ OrganizationId }}
+    },
+    {
+      "ParameterKey": "RoleToAssume",
+      "ParameterValue": {{ RoleToAssume }}
     }
 ]

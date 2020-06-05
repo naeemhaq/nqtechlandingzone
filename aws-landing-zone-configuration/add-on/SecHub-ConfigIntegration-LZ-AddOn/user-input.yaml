@@ -14,3 +14,5 @@ input_parameters:
   - file_name: parameters/core_accounts/enable-config-aggregator.json
     parameters:
       SecurityAccountId: "$[alfred_ssm_/org/member/security/account_id]"
+      OrganizationId: "$[alfred_ssm_/org/primary/organization_id]"
+      RoleToAssume: AWSCloudFormationStackSetExecutionRole
