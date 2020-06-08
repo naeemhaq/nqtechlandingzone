@@ -1,7 +1,7 @@
 [
     {
       "ParameterKey": "AggregatorAccount",
-      "ParameterValue": {{ SecurityAccountId }}
+      "ParameterValue": {{ AggregatorAccountId }}
     },
     {
       "ParameterKey": "OrganizationId",
