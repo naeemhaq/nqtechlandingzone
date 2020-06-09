@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: 2010-09-09
 Description: This CloudFormation template will automate the importing of aws config findings into aws security hub
 
 Parameters:
-  SecurityAccountId:
+  MasterAccountId:
     Type: String
     Description: SecurityHub master AWS account ID.
     AllowedPattern: '^[0-9]{12}$'
@@ -102,7 +102,7 @@ Resources:
         Variables:
             assume_role: !Sub ${RoleToAssume}
             ct_root_account: !Sub ${AWS::AccountId}
-            master_account: !Sub ${SecurityAccountId}
+            master_account: !Sub ${MasterAccountId}
             
   ConfigSecHubCWRule:
     Type: AWS::Events::Rule
