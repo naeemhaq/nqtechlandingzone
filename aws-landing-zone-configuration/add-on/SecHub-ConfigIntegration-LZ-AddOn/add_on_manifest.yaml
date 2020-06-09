@@ -8,7 +8,7 @@ organizational_units:
         core_resources:
           - name: enable-config-aggregator
             template_file: templates/core_accounts/enable-config-aggregator.template
-            parameter_file: parameters/core_accounts/enable-config-aggregator.json
+            #parameter_file: parameters/core_accounts/enable-config-aggregator.jso
             deploy_method: stack_set
   - name: {{ core_ou }}
     core_accounts:

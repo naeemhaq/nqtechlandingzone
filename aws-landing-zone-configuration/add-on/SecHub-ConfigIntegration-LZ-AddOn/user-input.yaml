@@ -2,7 +2,7 @@ input_parameters:
   - file_name: add_on_manifest.yaml 
     parameters: 
       core_ou: core 
-      core_account: primary 
+      core_account: security 
       avm_products: ['AWS-Landing-Zone-Account-Vending-Machine']
   - file_name: parameters/core_accounts/sechub-config-integrator.json
     parameters:
@@ -11,8 +11,4 @@ input_parameters:
       S3SourceBucket: "aws-landing-zone-configuration-217083334892-ca-central-1"
       ComplianceFrequency: 60
       RoleToAssume: AWSCloudFormationStackSetExecutionRole
-  - file_name: parameters/core_accounts/enable-config-aggregator.json
-    parameters:
-      AggregatorAccountId: "$[alfred_ssm_/org/primary/account_id]"
-      OrganizationId: "$[alfred_ssm_/org/primary/organization_id]"
-      RoleToAssume: AWSCloudFormationStackSetExecutionRole
+

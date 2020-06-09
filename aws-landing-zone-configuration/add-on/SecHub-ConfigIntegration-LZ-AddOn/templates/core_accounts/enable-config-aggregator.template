@@ -1,32 +1,11 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Enable config aggregator for organization in the security account. 
-
-Parameters:
-  AggregatorAccount:
-    Type: String
-    Description: Account ID of the aggregator
-  AggregatorRegion:
-    Type: String
-    Default: ca-central-1
-    Description: AWS region of the aggregator
-  OrganizationId:
-    Type: String
-    Description: AWS Organizations ID for the Landing Zone.
-    MinLength: 12
-    MaxLength: 12
-    AllowedPattern: '^[o][\-][a-z0-9]{10}$'
-    ConstraintDescription: >
-      The Org Id must be a 12 character string starting with o- and followed by 10 lower case alphanumeric characters
-  RoleToAssume:
-    Type: String
-    Default: 'AWSControlTowerExecution'
-    Description: >
-      IAM role to be assumed in child accounts to enable SecurityHub. The default is AWSControlTowerExecution for a Control Tower environment.
+Description: Enable config aggregator for organization in the master account. 
 
 Resources:
   ConfigAggregatorRole:
     Type: "AWS::IAM::Role"
     Properties: 
+      RoleName: LZ-Config-Aggregator-role
       AssumeRolePolicyDocument: 
         Version: "2012-10-17"
         Statement: 
@@ -54,21 +33,11 @@ Resources:
             - 'organizations:ListAccounts'
             - 'organizations:DescribeAccount'
             Resource: '*'
-          - Effect: Allow
-            Action:
-            - sts:AssumeRole
-            Resource: !Sub 'arn:aws:iam::*:role/${RoleToAssume}'
-            Condition:
-              StringEquals:
-                "aws:PrincipalOrgId": !Ref OrganizationId
 
   ConfigurationAggregator:
     Type: AWS::Config::ConfigurationAggregator
     Properties:
       OrganizationAggregationSource:
-        RoleArn: 
-          'Fn::GetAtt':
-           - ConfigAggregatorRole
-           - Arn
+        RoleArn: !GetAtt ConfigAggregatorRole.Arn
         AllAwsRegions: true
-      ConfigurationAggregatorName: NQTechAggregator1
+      ConfigurationAggregatorName: LZNQTechAggregator
