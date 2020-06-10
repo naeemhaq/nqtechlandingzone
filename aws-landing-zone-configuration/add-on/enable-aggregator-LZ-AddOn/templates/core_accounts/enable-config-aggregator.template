@@ -15,24 +15,11 @@ Resources:
                 - "config.amazonaws.com"
             Action: 
               - "sts:AssumeRole"
-      Policies:
-      - PolicyName: EnableConfigAggregator
-        PolicyDocument:
-          Version: 2012-10-17
-          Statement:
-          - Effect: Allow 
-            Action:
-            - 'config:PutConfigRule'
-            - 'config:DeleteConfigRule'
-            - 'config:DeleteEvaluationResults'
-            - 'config:DeleteConfigurationAggregator'
-            - 'config:PutConfigurationAggregator'
-            - 'organizations:EnableAWSServiceAccess'
-            - 'organizations:ListAWSServiceAccessForOrganization'
-            - 'organizations:ServicePrincipal'
-            - 'organizations:ListAccounts'
-            - 'organizations:DescribeAccount'
-            Resource: '*'
+      Path:/
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSConfigRoleForOrganizations
+        - arn:aws:iam::aws:policy/service-role/AWSConfigRole
+        - arn:aws:iam::aws:policy/AWSOrganizationsReadOnlyAccess
 
   ConfigurationAggregator:
     Type: AWS::Config::ConfigurationAggregator

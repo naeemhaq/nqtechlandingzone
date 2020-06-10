@@ -1,0 +1,11 @@
+---
+# Landing Zone Core Account Structure
+organizational_units:
+  # Landing Zone OU for Core accounts
+  - name: {{ core_ou }}
+    core_accounts:
+      - name: {{ core_account }}
+        core_resources:
+          - name: enable-config-aggregator
+            template_file: templates/core_accounts/enable-config-aggregator.template
+            deploy_method: stack_set

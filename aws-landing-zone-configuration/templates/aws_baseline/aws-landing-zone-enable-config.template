@@ -100,6 +100,10 @@ Conditions:
   EnableConfigRuleChangeNotification: !Equals
     - !Ref EnableConfigRuleComplianceChangeAlarm
     - 'true'
+  CreateAuthorization: !Not
+    - !Equals
+      - !Ref AggregatorAccount
+      - !Sub ${AWS::AccountId}
 
 Mappings:
   Settings:
@@ -313,4 +317,9 @@ Resources:
       - Id: !Sub 'AWS-Landing-Zone-Compliance-Change-Topic'
         Arn: !Ref SNSNotificationTopic
 
-
+  AggregationAuthorization:
+    Type: AWS::Config::AggregationAuthorization
+    Condition: CreateAuthorization
+    Properties:
+      AuthorizedAccountId: !Ref AggregatorAccount
+      AuthorizedAwsRegion: !Sub ${AWS::Region}
