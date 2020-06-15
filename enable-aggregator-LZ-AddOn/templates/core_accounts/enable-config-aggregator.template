@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Enable config aggregator for organization in the master account. 
+Description: Enable config aggregator for organization in the security account. 
 
 Resources:
   ConfigAggregatorRole:

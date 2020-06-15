@@ -2,7 +2,8 @@ input_parameters:
   - file_name: add_on_manifest.yaml 
     parameters: 
       core_ou: core 
-      core_account: primary 
+      core_account: master 
+      email_id: info@nqtech.ca
       avm_products: ['AWS-Landing-Zone-Account-Vending-Machine']
   - file_name: parameters/core_accounts/aws-landing-zone-securityhub-enabler.json
     parameters:

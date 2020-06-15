@@ -2,11 +2,12 @@ input_parameters:
   - file_name: add_on_manifest.yaml 
     parameters: 
       core_ou: core 
-      core_account: primary 
+      core_account: master 
+      email_id: info@nqtech.ca
       avm_products: ['AWS-Landing-Zone-Account-Vending-Machine']
-  - file_name: parameters/core_accounts/sechub-config-integrator.json
+  - file_name: parameters/core_accounts/sechub-config-integration.json
     parameters:
-      MasterAccountId: "$[alfred_ssm_/org/primary/account_id]"
+      SecurityAccountId: "$[alfred_ssm_/org/primary/account_id]"
       OrganizationId: "$[alfred_ssm_/org/primary/organization_id]"
       S3SourceBucket: "aws-landing-zone-configuration-217083334892-ca-central-1"
       ComplianceFrequency: 60

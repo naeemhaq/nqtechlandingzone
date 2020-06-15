@@ -1,0 +1,92 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: This CloudFormation template will automate the importing of aws config findings into aws security hub
+
+Parameters:
+ S3SourceBucket:
+   Type: String
+   Description: S3 bucket containing securityhub_enabler.zip file for SecurityHubEnabler lambda function
+ AWSSharedS3KeyPrefix:
+    Type: 'String'
+    Description: 'Organization ID to use as the S3 Key prefix for storing objects'
+  
+Resources:
+  SecHubConfigIntRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: 'config-sechub-int-lambda-role'
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Policies:
+        - PolicyName: SecHubConfigIntegrationpolicy
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'securityhub:BatchImportFindings'
+                Resource: '*'
+              - Effect: Allow
+                Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource: '*'
+              - Effect: Allow
+                Action: 
+                  - 'config:DescribeConfigRules'
+                Resource: '*'
+  ConfigSecHubFunction:
+    Type: AWS::Lambda::Function
+    DependsOn: SecHubConfigIntRole
+    Properties:
+      Code:
+        S3Bucket: !Ref S3SourceBucket
+        S3Key: 'sechubconfig-int.zip'
+      FunctionName : 'Config-SecHub-Lambda'
+      Handler: 'sechubconfig-int.lambda_handler'
+      Role:
+        Fn::GetAtt: 
+          - 'SecHubConfigIntRole' 
+          - 'Arn'
+      Runtime: python3.7
+      Timeout: 900 
+  ConfigSecHubCWRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: This CW rule integrates AWS Config Compliance events with AWS Lambda as a target
+      Name: 'Config-Sechub-CW-Rule'
+      EventPattern:
+        source:
+          - aws.config
+        detail-type:
+          - Config Rules Compliance Change
+        detail:
+          messageType:
+            - ComplianceChangeNotification
+      State: 'ENABLED'
+      Targets:
+        - 
+          Arn: 
+            Fn::GetAtt:
+              - 'ConfigSecHubFunction'
+              - 'Arn'
+          Id: 'TargetFunctionV1'      
+  PermissionForEventsToInvokeLambda:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: 
+        Fn::GetAtt:
+          - 'ConfigSecHubFunction'
+          - 'Arn'
+      Action: 'lambda:InvokeFunction'
+      Principal: 'events.amazonaws.com'
+      SourceArn:
+        Fn::GetAtt:
+          - 'ConfigSecHubCWRule'
+          - 'Arn'

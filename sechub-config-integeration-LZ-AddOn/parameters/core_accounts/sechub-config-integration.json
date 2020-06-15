@@ -1,7 +1,7 @@
 [
     {
-      "ParameterKey": "MasterAccountId",
-      "ParameterValue": {{ MasterAccountId }}
+      "ParameterKey": "SecurityAccountId",
+      "ParameterValue": {{ SecurityAccountId }}
     },
     {
       "ParameterKey": "OrganizationId",
