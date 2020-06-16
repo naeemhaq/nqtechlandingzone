@@ -46,26 +46,31 @@ Resources:
       PolicyDocument:
         Version: 2012-10-17
         Statement:
-        - Sid: SharedBucketPermissions
+        - Sid: SharedBucketPermissionsRole
           Effect: Deny
           Principal: "*"
           Action: s3:*
-          Resource: arn:aws:s3:::aws-landing-zone-s3-shared-sse-217083334892-ca-central-1/*
+          Resource: !GetAtt S3SharedSSEBucket.Arn
           Condition:
-            NotIpAddress:
-              aws:SourceIp: 174.112.28.92/32
-        - Sid: SharedBucketPermissions
-          Effect: Allow
-          Principal: "*"
-          Action: s3:*
-          Resource: arn:aws:s3:::aws-landing-zone-s3-shared-sse-217083334892-ca-central-1/*
-          Condition:
+            StringNotLike:
+              aws:PrincipalArn:
+              - "arn:aws:iam::*:role/AWSCloudFormationStackSetExecutionRole"
+              - "arn:aws:iam::*:role/AWSCloudFormationStackSetAdministrationRole"
+              - "arn:aws:iam::*:role/stacksets-exec*"
+              - "arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/ca-central-1/AWSReservedSSO_Administrator*"
+              - "arn:aws:iam::*:role/AWS-Landinzone-StateMachineRole*"
+              - "arn:aws:iam::*:role/AWSLandingZoneAdminExecutionRole"
+              - "arn:aws:iam::*:role/StateMachineLambdaRole"
+              - "arn:aws:iam::*:role/StateMachineTriggerLambdaRole"
+              - !Sub "arn:aws:iam::${AWS::AccountId}:user/nqtech"
+              - !Sub "arn:aws:iam::${AWS::AccountId}:root"
             ForAnyValue:StringLike:
               aws:PrincipalOrgPaths:
               - !Join
                   - ''
                   - - !Ref AWSSharedS3KeyPrefix
                     - '/*'
+
 Outputs:
   BucketName:
     Description: AWS Landing Zone s3 destination bucket name
