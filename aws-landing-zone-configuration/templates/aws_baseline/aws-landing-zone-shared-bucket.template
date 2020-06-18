@@ -47,29 +47,20 @@ Resources:
         Version: 2012-10-17
         Statement:
         - Sid: SharedBucketPermissionsRole
-          Effect: Deny
+          Effect: Allow
           Principal: "*"
-          Action: s3:*
-          Resource: !GetAtt S3SharedSSEBucket.Arn
+          Action: "s3:*"
+          Resource:
+            - Fn::Join:
+              - ""
+              - - Fn::GetAtt:
+                  - S3SharedSSEBucket
+                  - Arn
+                - "/*"
           Condition:
-            StringNotLike:
-              aws:PrincipalArn:
-              - "arn:aws:iam::*:role/AWSCloudFormationStackSetExecutionRole"
-              - "arn:aws:iam::*:role/AWSCloudFormationStackSetAdministrationRole"
-              - "arn:aws:iam::*:role/stacksets-exec*"
-              - "arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/ca-central-1/AWSReservedSSO_Administrator*"
-              - "arn:aws:iam::*:role/AWS-Landinzone-StateMachineRole*"
-              - "arn:aws:iam::*:role/AWSLandingZoneAdminExecutionRole"
-              - "arn:aws:iam::*:role/StateMachineLambdaRole"
-              - "arn:aws:iam::*:role/StateMachineTriggerLambdaRole"
-              - !Sub "arn:aws:iam::${AWS::AccountId}:user/nqtech"
-              - !Sub "arn:aws:iam::${AWS::AccountId}:root"
-            ForAnyValue:StringLike:
-              aws:PrincipalOrgPaths:
-              - !Join
-                  - ''
-                  - - !Ref AWSSharedS3KeyPrefix
-                    - '/*'
+            StringEquals:
+              aws:PrincipalOrgID:
+              - !Ref AWSSharedS3KeyPrefix
 
 Outputs:
   BucketName:

@@ -49,9 +49,11 @@ Resources:
                 - lambda.amazonaws.com
             Action:
               - 'sts:AssumeRole'
+      Path: '/'
       Policies:
         - PolicyName: SecHubConfigIntegrationpolicy
           PolicyDocument:
+            Version: 2012-10-17
             Statement:
               - Effect: Allow
                 Action:
@@ -74,15 +76,23 @@ Resources:
                   - 'logs:CreateLogGroup'
                   - 'logs:CreateLogStream'
                   - 'logs:PutLogEvents'
-                Resource: '*'
+                Resource: 
+                  -  !Sub 'arn:aws:logs:us-east-1:${AWS::AccountId}:log-group:/aws/lambda/*'
               - Effect: Allow
                 Action:
                   - 'sts:AssumeRole'
                 Resource: !Sub 'arn:aws:iam::*:role/${RoleToAssume}'
               - Effect: Allow
                 Action: 
+                  - 'iam:CreateServiceLinkedRole'
                   - 'config:DescribeConfigRules'
                 Resource: '*'
+    Metadata:
+      cfn_nag:
+        rules_to_suppress:
+          - id: W11
+            reason: "Organizations doesn't have arns, so we have to use an asterisk in the policy"      
+
   ConfigSecHubFunction:
     Type: AWS::Lambda::Function
     DependsOn: SecHubConfigIntRole
@@ -92,10 +102,7 @@ Resources:
         S3Key: 'sechubconfig-int.zip'
       FunctionName : 'Config-SecHub-Lambda'
       Handler: 'sechubconfig-int.lambda_handler'
-      Role:
-        Fn::GetAtt: 
-          - 'SecHubConfigIntRole' 
-          - 'Arn'
+      Role: !Sub "arn:aws:iam::${AWS::AccountId}:role/${SecHubConfigIntRole}"
       Runtime: python3.7
       Timeout: 900 
       Environment:
@@ -120,21 +127,13 @@ Resources:
       State: 'ENABLED'
       Targets:
         - 
-          Arn: 
-            Fn::GetAtt:
-              - 'ConfigSecHubFunction'
-              - 'Arn'
+          Arn: !GetAtt ConfigSecHubFunction.Arn
           Id: 'TargetFunctionV1'      
+        
   PermissionForEventsToInvokeLambda:
     Type: AWS::Lambda::Permission
     Properties:
-      FunctionName: 
-        Fn::GetAtt:
-          - 'ConfigSecHubFunction'
-          - 'Arn'
+      FunctionName: !GetAtt ConfigSecHubFunction.Arn
       Action: 'lambda:InvokeFunction'
       Principal: 'events.amazonaws.com'
-      SourceArn:
-        Fn::GetAtt:
-          - 'ConfigSecHubCWRule'
-          - 'Arn'
+      SourceArn: !GetAtt ConfigSecHubCWRule.Arn

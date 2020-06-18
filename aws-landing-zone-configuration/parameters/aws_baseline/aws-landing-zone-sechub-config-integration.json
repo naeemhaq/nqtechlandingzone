@@ -1,7 +1,7 @@
 [
     {
       "ParameterKey": "S3SourceBucket",
-      "ParameterValue": "$[alfred_ssm_/org/member/sharedservice/bucket_name]"
+      "ParameterValue": "$[alfred_ssm_/org/primary/bucket_name]"
     },
     {
       "ParameterKey": "AWSSharedS3KeyPrefix",

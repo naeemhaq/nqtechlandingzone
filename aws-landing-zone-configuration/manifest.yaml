@@ -132,7 +132,7 @@ organizational_units:
                 value: $[output_PublicSubnet2ID]
               - name: /org/member/sharedservices/vpc_private_route_ids
                 value: $[output_PrivateSubnetRouteTables]
-          - name: SharedBucketMaster
+          - name: SharedBucketSharedService
             template_file: templates/aws_baseline/aws-landing-zone-shared-bucket.template
             parameter_file: parameters/aws_baseline/aws-landing-zone-shared-bucket.json
             deploy_method: stack_set
@@ -318,11 +318,10 @@ baseline_resources:
     parameter_file: parameters/aws_baseline/aws-landing-zone-primary-vpc.json
     deploy_method: stack_set
     parameter_override: true
-
-  - name: EnableConfigSecHubIntegration
+    
+  - name: EnableIntegrationConfigSecHub
     baseline_products:
       - AWS-Landing-Zone-Account-Vending-Machine
-    template_file: templates/aws_baseline/aws-lz-sechub-config-integration.template
-    parameter_file: parameters/aws_baseline/aws-lz-sechub-config-integration.json
+    template_file: templates/aws_baseline/aws-landing-zone-sechub-config-integration.template
+    parameter_file: parameters/aws_baseline/aws-landing-zone-sechub-config-integration.json
     deploy_method: stack_set
-  
