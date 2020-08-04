@@ -133,8 +133,8 @@ organizational_units:
               - name: /org/member/sharedservices/vpc_private_route_ids
                 value: $[output_PrivateSubnetRouteTables]
           - name: SharedBucketSharedService
-            template_file: templates/aws_baseline/aws-landing-zone-shared-bucket.template
-            parameter_file: parameters/aws_baseline/aws-landing-zone-shared-bucket.json
+            template_file: templates/core_accounts/aws-landing-zone-shared-bucket.template
+            parameter_file: parameters/core_accounts/aws-landing-zone-shared-bucket.json
             deploy_method: stack_set
             ssm_parameters:
               - name: /org/member/sharedservice/bucket_name # This key will always be created in region mentioned at the top of the Manifest file.
@@ -151,14 +151,7 @@ organizational_units:
           # SSM parameter to hold the Organization ID
           - name: /org/primary/organization_id
             value: $[OrganizationId]
-        core_resources:
-          - name: SharedBucketMaster
-            template_file: templates/aws_baseline/aws-landing-zone-shared-bucket.template
-            parameter_file: parameters/aws_baseline/aws-landing-zone-shared-bucket.json
-            deploy_method: stack_set
-            ssm_parameters:
-              - name: /org/primary/bucket_name # This key will always be created in region mentioned at the top of the Manifest file.
-                value: $[output_BucketName]
+            
   - name: applications
     include_in_baseline_products:
       - AWS-Landing-Zone-Account-Vending-Machine
@@ -318,10 +311,3 @@ baseline_resources:
     parameter_file: parameters/aws_baseline/aws-landing-zone-primary-vpc.json
     deploy_method: stack_set
     parameter_override: true
-    
-  - name: EnableIntegrationConfigSecHub
-    baseline_products:
-      - AWS-Landing-Zone-Account-Vending-Machine
-    template_file: templates/aws_baseline/aws-landing-zone-sechub-config-integration.template
-    parameter_file: parameters/aws_baseline/aws-landing-zone-sechub-config-integration.json
-    deploy_method: stack_set

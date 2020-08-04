@@ -1,0 +1,7 @@
+input_parameters: 
+  - file_name: add_on_manifest.yaml 
+    parameters: 
+      core_ou: core 
+      core_account: shared-services
+      email_id: naeem.ulhaq@nqtech.ca
+      avm_products: ['AWS-Landing-Zone-Account-Vending-Machine']
