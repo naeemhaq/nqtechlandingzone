@@ -1,0 +1,14 @@
+[
+  {
+    "ParameterKey": "S3SourceBucket",
+    "ParameterValue": "$[alfred_ssm_/org/member/sharedservice/bucket_name]"
+  },
+  {
+    "ParameterKey": "AWSSharedS3KeyPrefix",
+    "ParameterValue": "$[alfred_ssm_/org/primary/organization_id]"
+  },
+  {
+    "ParameterKey": "LambdaCodeKey",
+    "ParameterValue": {{ LambdaCodeKey }}
+  }
+]

@@ -1,0 +1,13 @@
+input_parameters: 
+  - file_name: add_on_manifest.yaml 
+    parameters: 
+      core_ou: core 
+      core_account: security 
+      email_id: naeemulhaq@hotmail.ca
+      avm_products: ['AWS-Landing-Zone-Account-Vending-Machine']
+  - file_name: parameters/aws_baseline/aws-landing-zone-sechub-config-integration.json
+    parameters:
+      OrganizationId: "$[alfred_ssm_/org/primary/organization_id]"
+      S3SourceBucket: "$[alfred_ssm_/org/member/sharedservice/bucket_name]"
+      LambdaCodeKey: "sechubconfig-int.zip"
+

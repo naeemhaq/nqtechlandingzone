@@ -1,0 +1,25 @@
+---
+# Landing Zone Core Account Structure
+organizational_units:
+  # Landing Zone OU for Core accounts
+  - name: {{ core_ou }}
+    core_accounts:
+      - name: {{ core_account }}
+        email: {{ email_id }}
+        ssm_parameters:
+          # SSM parameter to hold the AWS Account ID of Organization's Master Account
+          - name: /org/primary/account_id
+            value: $[AccountId]
+          # SSM parameter to hold the Email ID of Organization's Master Account
+          - name: /org/primary/email_id
+            value: $[AccountEmail]
+          # SSM parameter to hold the Organization ID
+          - name: /org/primary/organization_id
+            value: $[OrganizationId]
+        baseline_resources:
+          - name: EnableIntegrationConfigSecHub
+            baseline_products:
+              - AWS-Landing-Zone-Account-Vending-Machine
+            template_file: templates/aws_baseline/aws-landing-zone-sechub-config-integration.template
+            parameter_file: parameters/aws_baseline/aws-landing-zone-sechub-config-integration.json
+            deploy_method: stack_set
