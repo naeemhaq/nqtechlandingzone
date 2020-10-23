@@ -16,10 +16,10 @@ organizational_units:
           # SSM parameter to hold the Organization ID
           - name: /org/primary/organization_id
             value: $[OrganizationId]
-        baseline_resources:
-          - name: EnableIntegrationConfigSecHub
-            baseline_products:
-              - AWS-Landing-Zone-Account-Vending-Machine
-            template_file: templates/aws_baseline/aws-landing-zone-sechub-config-integration.template
-            parameter_file: parameters/aws_baseline/aws-landing-zone-sechub-config-integration.json
-            deploy_method: stack_set
+baseline_resources:
+  - name: EnableIntegrationConfig-SecHub
+    baseline_products:
+      - AWS-Landing-Zone-Account-Vending-Machine
+    template_file: templates/aws_baseline/aws-landing-zone-sechub-config-integration.template
+    parameter_file: parameters/aws_baseline/aws-landing-zone-sechub-config-integration.json
+    deploy_method: stack_set

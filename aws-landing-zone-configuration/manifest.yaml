@@ -132,13 +132,7 @@ organizational_units:
                 value: $[output_PublicSubnet2ID]
               - name: /org/member/sharedservices/vpc_private_route_ids
                 value: $[output_PrivateSubnetRouteTables]
-          - name: SharedBucketSharedService
-            template_file: templates/core_accounts/aws-landing-zone-shared-bucket.template
-            parameter_file: parameters/core_accounts/aws-landing-zone-shared-bucket.json
-            deploy_method: stack_set
-            ssm_parameters:
-              - name: /org/member/sharedservice/bucket_name # This key will always be created in region mentioned at the top of the Manifest file.
-                value: $[output_BucketName]
+                
       # Organization's Master account
       - name: primary  # NOTE: DO NOT MODIFY THIS ACCOUNT NAME AND IT SHOULD BE THE LAST CORE ACCOUNT IN THE LIST
         ssm_parameters:

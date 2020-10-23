@@ -4,13 +4,10 @@ Description: This CloudFormation template will automate the importing of aws con
 Parameters:
  S3SourceBucket:
    Type: String
-   Description: S3 bucket containing securityhub_enabler.zip file for SecurityHubEnabler lambda function
- AWSSharedS3KeyPrefix:
+   Description: S3 bucket containing lambda code zip file
+ LambdaCodeZipFile:
    Type: 'String'
-   Description: 'Organization ID to use as the S3 Key prefix for storing objects'
- LambdaCodeKey:
-   Type: 'String'
-   Description: 'Organization ID to use as the S3 Key prefix for storing objects'
+   Description: 'Name of the zip file of the lambda code'
 
 Resources:
   SecHubConfigIntRole:
@@ -50,7 +47,7 @@ Resources:
     Properties:
       Code:
         S3Bucket: !Ref S3SourceBucket
-        S3Key: LambdaCodeKey
+        S3Key: !Ref LambdaCodeZipFile
       FunctionName : 'Config-SecHub-Lambda'
       Handler: 'sechubconfig-int.lambda_handler'
       Role:
